@@ -1,0 +1,81 @@
+client:
+  name: basic
+  file-system: device-agnostic
+tools: {}
+targets:
+  "PackageStructure": ["<PackageStructure>"]
+  "main": ["<secure-enclave-vm-hang-arm64-apple-macosx26.0-debug.exe>","<secure-enclave-vm-hang-arm64-apple-macosx26.0-debug.module>"]
+  "secure-enclave-vm-hang-arm64-apple-macosx26.0-debug.exe": ["<secure-enclave-vm-hang-arm64-apple-macosx26.0-debug.exe>"]
+  "secure-enclave-vm-hang-arm64-apple-macosx26.0-debug.module": ["<secure-enclave-vm-hang-arm64-apple-macosx26.0-debug.module>"]
+  "test": ["<secure-enclave-vm-hang-arm64-apple-macosx26.0-debug.exe>","<secure-enclave-vm-hang-arm64-apple-macosx26.0-debug.module>"]
+default: "main"
+nodes:
+  "/Users/jkmassel/Projects/secure-enclave-vm-hang/Sources/secure-enclave-vm-hang/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+  "/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure-enclave-vm-hang":
+    is-mutated: true
+commands:
+  "/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure-enclave-vm-hang-entitlement.plist":
+    tool: write-auxiliary-file
+    inputs: ["<entitlement-plist>","<com.apple.security.get-task-allow>"]
+    outputs: ["/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure-enclave-vm-hang-entitlement.plist"]
+    description: "Write auxiliary file /Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure-enclave-vm-hang-entitlement.plist"
+
+  "/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure-enclave-vm-hang.product/Objects.LinkFileList":
+    tool: write-auxiliary-file
+    inputs: ["<link-file-list>","/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure_enclave_vm_hang.build/main.swift.o"]
+    outputs: ["/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure-enclave-vm-hang.product/Objects.LinkFileList"]
+    description: "Write auxiliary file /Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure-enclave-vm-hang.product/Objects.LinkFileList"
+
+  "/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure_enclave_vm_hang.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/Users/jkmassel/Projects/secure-enclave-vm-hang/Sources/secure-enclave-vm-hang/main.swift"]
+    outputs: ["/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure_enclave_vm_hang.build/sources"]
+    description: "Write auxiliary file /Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure_enclave_vm_hang.build/sources"
+
+  "/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/swift-version--712B243A65091274.txt":
+    tool: write-auxiliary-file
+    inputs: ["<swift-get-version>","/Applications/Xcode-26.3.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"]
+    outputs: ["/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/swift-version--712B243A65091274.txt"]
+    always-out-of-date: "true"
+    description: "Write auxiliary file /Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/swift-version--712B243A65091274.txt"
+
+  "<secure-enclave-vm-hang-arm64-apple-macosx26.0-debug.exe>":
+    tool: phony
+    inputs: ["<secure-enclave-vm-hang-arm64-apple-macosx26.0-debug.exe-CodeSigning>"]
+    outputs: ["<secure-enclave-vm-hang-arm64-apple-macosx26.0-debug.exe>"]
+
+  "<secure-enclave-vm-hang-arm64-apple-macosx26.0-debug.module>":
+    tool: phony
+    inputs: ["/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure_enclave_vm_hang.build/main.swift.o","/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/Modules/secure_enclave_vm_hang.swiftmodule"]
+    outputs: ["<secure-enclave-vm-hang-arm64-apple-macosx26.0-debug.module>"]
+
+  "C.secure-enclave-vm-hang-arm64-apple-macosx26.0-debug.exe":
+    tool: shell
+    inputs: ["/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure_enclave_vm_hang.build/main.swift.o","/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure-enclave-vm-hang.product/Objects.LinkFileList"]
+    outputs: ["/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure-enclave-vm-hang"]
+    description: "Linking ./.build/arm64-apple-macosx/debug/secure-enclave-vm-hang"
+    args: ["/Applications/Xcode-26.3.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc","-L","/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug","-o","/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure-enclave-vm-hang","-module-name","secure_enclave_vm_hang","-Xlinker","-no_warn_duplicate_libraries","-emit-executable","-Xlinker","-alias","-Xlinker","_secure_enclave_vm_hang_main","-Xlinker","_main","-Xlinker","-rpath","-Xlinker","@loader_path","@/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure-enclave-vm-hang.product/Objects.LinkFileList","-Xlinker","-rpath","-Xlinker","/Applications/Xcode-26.3.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-6.2/macosx","-target","arm64-apple-macosx13.0","-Xlinker","-add_ast_path","-Xlinker","/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/Modules/secure_enclave_vm_hang.swiftmodule","-plugin-path","/Applications/Xcode-26.3.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing","-sdk","/Applications/Xcode-26.3.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk","-F","/Applications/Xcode-26.3.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-F","/Applications/Xcode-26.3.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks","-I","/Applications/Xcode-26.3.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-L","/Applications/Xcode-26.3.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-g"]
+
+  "C.secure-enclave-vm-hang-arm64-apple-macosx26.0-debug.exe-entitlements":
+    tool: shell
+    inputs: ["/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure-enclave-vm-hang","/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure-enclave-vm-hang-entitlement.plist"]
+    outputs: ["<secure-enclave-vm-hang-arm64-apple-macosx26.0-debug.exe-CodeSigning>"]
+    description: "Applying debug entitlements to ./.build/arm64-apple-macosx/debug/secure-enclave-vm-hang"
+    args: ["codesign","--force","--sign","-","--entitlements","/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure-enclave-vm-hang-entitlement.plist","/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure-enclave-vm-hang"]
+
+  "C.secure-enclave-vm-hang-arm64-apple-macosx26.0-debug.module":
+    tool: shell
+    inputs: ["/Users/jkmassel/Projects/secure-enclave-vm-hang/Sources/secure-enclave-vm-hang/main.swift","/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/swift-version--712B243A65091274.txt","/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure_enclave_vm_hang.build/sources"]
+    outputs: ["/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure_enclave_vm_hang.build/main.swift.o","/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/Modules/secure_enclave_vm_hang.swiftmodule"]
+    description: "Compiling Swift Module 'secure_enclave_vm_hang' (1 sources)"
+    args: ["/Applications/Xcode-26.3.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc","-module-name","secure_enclave_vm_hang","-emit-dependencies","-emit-module","-emit-module-path","/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/Modules/secure_enclave_vm_hang.swiftmodule","-output-file-map","/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure_enclave_vm_hang.build/output-file-map.json","-incremental","-c","@/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure_enclave_vm_hang.build/sources","-I","/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/Modules","-target","arm64-apple-macosx13.0","-incremental","-enable-batch-mode","-serialize-diagnostics","-index-store-path","/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/index/store","-Onone","-enable-testing","-j16","-DSWIFT_PACKAGE","-DDEBUG","-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE","-module-cache-path","/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/ModuleCache","-parseable-output","-Xfrontend","-entry-point-function-name","-Xfrontend","secure_enclave_vm_hang_main","-swift-version","6","-plugin-path","/Applications/Xcode-26.3.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing","-sdk","/Applications/Xcode-26.3.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk","-F","/Applications/Xcode-26.3.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-F","/Applications/Xcode-26.3.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks","-I","/Applications/Xcode-26.3.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-L","/Applications/Xcode-26.3.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-g","-Xcc","-isysroot","-Xcc","/Applications/Xcode-26.3.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk","-Xcc","-F","-Xcc","/Applications/Xcode-26.3.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-Xcc","-F","-Xcc","/Applications/Xcode-26.3.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks","-Xcc","-fPIC","-Xcc","-g","-package-name","secure_enclave_vm_hang"]
+
+  "PackageStructure":
+    tool: package-structure-tool
+    inputs: ["/Users/jkmassel/Projects/secure-enclave-vm-hang/Sources/secure-enclave-vm-hang/","/Users/jkmassel/Projects/secure-enclave-vm-hang/Package.swift","/Users/jkmassel/Projects/secure-enclave-vm-hang/Package.resolved"]
+    outputs: ["<PackageStructure>"]
+    description: "Planning build"
+    allow-missing-inputs: true
+

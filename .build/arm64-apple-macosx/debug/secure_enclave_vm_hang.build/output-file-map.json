@@ -1,0 +1,12 @@
+{
+  "": {
+    "swift-dependencies": "/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure_enclave_vm_hang.build/master.swiftdeps"
+  },
+  "/Users/jkmassel/Projects/secure-enclave-vm-hang/Sources/secure-enclave-vm-hang/main.swift": {
+    "dependencies": "/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure_enclave_vm_hang.build/main.d",
+    "object": "/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure_enclave_vm_hang.build/main.swift.o",
+    "swiftmodule": "/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure_enclave_vm_hang.build/main~partial.swiftmodule",
+    "swift-dependencies": "/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure_enclave_vm_hang.build/main.swiftdeps",
+    "diagnostics": "/Users/jkmassel/Projects/secure-enclave-vm-hang/.build/arm64-apple-macosx/debug/secure_enclave_vm_hang.build/main.dia"
+  }
+}
