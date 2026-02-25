@@ -1,0 +1,30 @@
+name: Test SecureEnclave on macOS VMs
+on: push
+
+jobs:
+  test-sequoia:
+    name: macOS 15 (Sequoia)
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - run: system_profiler SPHardwareDataType
+      - run: sw_vers
+      - run: swift run secure-enclave-vm-hang --create-key
+
+  test-sonoma:
+    name: macOS 14 (Sonoma)
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - run: system_profiler SPHardwareDataType
+      - run: sw_vers
+      - run: swift run secure-enclave-vm-hang --create-key
+
+  test-ventura:
+    name: macOS 13 (Ventura)
+    runs-on: macos-13
+    steps:
+      - uses: actions/checkout@v4
+      - run: system_profiler SPHardwareDataType
+      - run: sw_vers
+      - run: swift run secure-enclave-vm-hang --create-key
